@@ -1,12 +1,19 @@
 import { useEffect, useRef } from 'react';
 
-let Accelerometer: any;
+// Use a type-only import for Accelerometer types
+import type { Accelerometer } from 'expo-sensors';
+
+let AccelerometerModule: typeof Accelerometer | null = null;
 try {
-  Accelerometer = require('expo-sensors').Accelerometer;
+  // Use require for the runtime implementation
+  AccelerometerModule = require('expo-sensors').Accelerometer;
 } catch (e) {
   console.warn('[TofuLog] expo-sensors not available, shake detection disabled');
-  Accelerometer = null;
+  AccelerometerModule = null;
 }
+
+// Ensure the type is used to satisfy TS
+export type { Accelerometer };
 
 const SHAKE_THRESHOLD = 1.5;
 const SHAKE_TIMEOUT = 1000;
@@ -27,24 +34,23 @@ export function useShakeDetector({
   useEffect(() => {
     if (!enabled) return;
 
-    let subscription: ReturnType<typeof Accelerometer.addListener> | null =
-      null;
+    let subscription: any = null;
 
     const startListening = async () => {
-      if (!Accelerometer) {
+      if (!AccelerometerModule) {
         console.warn('[TofuLog] Accelerometer not available');
         return;
       }
       try {
-        const isAvailable = await Accelerometer.isAvailableAsync();
+        const isAvailable = await AccelerometerModule.isAvailableAsync();
         if (!isAvailable) {
           console.warn('[TofuLog] Accelerometer not available on this device');
           return;
         }
 
-        Accelerometer.setUpdateInterval(100);
+        AccelerometerModule.setUpdateInterval(100);
 
-        subscription = Accelerometer.addListener((data) => {
+        subscription = AccelerometerModule.addListener((data: { x: number; y: number; z: number }) => {
           const { x, y, z } = data;
           const acceleration = Math.sqrt(x * x + y * y + z * z);
 
