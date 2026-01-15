@@ -56,7 +56,7 @@ yarn add tofu-log
 This package requires the following Expo packages:
 
 ```bash
-npx expo install expo-sensors expo-device expo-constants expo-clipboard expo-file-system expo-sharing lucide-react-native
+npx expo install @expo/vector-icons expo-sensors expo-device expo-constants expo-clipboard expo-file-system expo-sharing
 ```
 
 ## Quick Start

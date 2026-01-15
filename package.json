@@ -63,16 +63,15 @@
     "typescript": "5.1"
   },
   "peerDependencies": {
+    "@expo/vector-icons": "*",
     "expo-clipboard": "*",
     "expo-constants": "*",
     "expo-device": "*",
     "expo-file-system": "*",
     "expo-sensors": "*",
     "expo-sharing": "*",
-    "lucide-react-native": "*",
     "react": ">=17.0.0",
-    "react-native": ">=0.70.0",
-    "react-native-svg": "*"
+    "react-native": ">=0.70.0"
   },
   "peerDependenciesMeta": {
     "expo-clipboard": {
@@ -91,9 +90,6 @@
       "optional": true
     },
     "expo-sharing": {
-      "optional": true
-    },
-    "react-native-svg": {
       "optional": true
     }
   },

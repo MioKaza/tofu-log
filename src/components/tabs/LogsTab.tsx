@@ -11,7 +11,7 @@ import {
 import { useDevOverlay } from '../../context/DevOverlayContext';
 import type { LogLevel, LogEntry } from '../../types';
 import { TrashIcon } from '../Icons';
-import { Terminal } from 'lucide-react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { copyToClipboard, formatLogForClipboard } from '../../utils/clipboard';
 import { pushLogToTerminal } from '../../interceptors/consoleInterceptor';
 import { KAOMOJI, BADGE } from '../../vibe/theme';
@@ -140,7 +140,7 @@ export function LogsTab() {
           onPress={() => handlePushToTerminal(item)}
           activeOpacity={0.7}
         >
-          <Terminal size={14} color="#3DB6B1" strokeWidth={2} />
+          <MaterialCommunityIcons name="console" size={14} color="#3DB6B1" />
         </TouchableOpacity>
       </View>
     );

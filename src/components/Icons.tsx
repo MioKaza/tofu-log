@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  ScrollText,
-  Activity,
-  Smartphone,
-  X,
-  Trash2,
-  Leaf,
-  Bug,
-  Copy,
-  Share,
-} from 'lucide-react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface IconProps {
   color?: string;
@@ -17,39 +7,39 @@ interface IconProps {
   strokeWidth?: number;
 }
 
-export const LogsIcon = ({ color = '#cad3f5', size = 16, strokeWidth = 1.5 }: IconProps) => (
-  <ScrollText color={color} size={size} strokeWidth={strokeWidth} />
+export const LogsIcon = ({ color = '#cad3f5', size = 16 }: IconProps) => (
+  <MaterialCommunityIcons name="text-box-outline" size={size} color={color} />
 );
 
-export const NetworkIcon = ({ color = '#cad3f5', size = 16, strokeWidth = 1.5 }: IconProps) => (
-  <Activity color={color} size={size} strokeWidth={strokeWidth} />
+export const NetworkIcon = ({ color = '#cad3f5', size = 16 }: IconProps) => (
+  <MaterialCommunityIcons name="web" size={size} color={color} />
 );
 
-export const CrashesIcon = ({ color = '#cad3f5', size = 16, strokeWidth = 1.5 }: IconProps) => (
-  <Bug color={color} size={size} strokeWidth={strokeWidth} />
+export const CrashesIcon = ({ color = '#cad3f5', size = 16 }: IconProps) => (
+  <MaterialCommunityIcons name="bug" size={size} color={color} />
 );
 
-export const DeviceIcon = ({ color = '#cad3f5', size = 16, strokeWidth = 1.5 }: IconProps) => (
-  <Smartphone color={color} size={size} strokeWidth={strokeWidth} />
+export const DeviceIcon = ({ color = '#cad3f5', size = 16 }: IconProps) => (
+  <MaterialCommunityIcons name="cellphone" size={size} color={color} />
 );
 
-export const CloseIcon = ({ color = '#cad3f5', size = 16, strokeWidth = 1.5 }: IconProps) => (
-  <X color={color} size={size} strokeWidth={strokeWidth} />
+export const CloseIcon = ({ color = '#cad3f5', size = 16 }: IconProps) => (
+  <MaterialCommunityIcons name="close" size={size} color={color} />
 );
 
-export const TrashIcon = ({ color = '#cad3f5', size = 16, strokeWidth = 1.5 }: IconProps) => (
-  <Trash2 color={color} size={size} strokeWidth={strokeWidth} />
+export const TrashIcon = ({ color = '#cad3f5', size = 16 }: IconProps) => (
+  <MaterialCommunityIcons name="delete-outline" size={size} color={color} />
 );
 
-export const LeafIcon = ({ color = '#cad3f5', size = 24, strokeWidth = 1.5 }: IconProps) => (
-  <Leaf color={color} size={size} strokeWidth={strokeWidth} />
+export const LeafIcon = ({ color = '#cad3f5', size = 24 }: IconProps) => (
+  <MaterialCommunityIcons name="leaf" size={size} color={color} />
 );
 
-export const CopyIcon = ({ color = '#cad3f5', size = 16, strokeWidth = 1.5 }: IconProps) => (
-  <Copy color={color} size={size} strokeWidth={strokeWidth} />
+export const CopyIcon = ({ color = '#cad3f5', size = 16 }: IconProps) => (
+  <MaterialCommunityIcons name="content-copy" size={size} color={color} />
 );
 
-export const ShareIcon = ({ color = '#cad3f5', size = 16, strokeWidth = 1.5 }: IconProps) => (
-  <Share color={color} size={size} strokeWidth={strokeWidth} />
+export const ShareIcon = ({ color = '#cad3f5', size = 16 }: IconProps) => (
+  <MaterialCommunityIcons name="share-variant" size={size} color={color} />
 );
 
