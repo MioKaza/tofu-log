@@ -1,6 +1,6 @@
 {
   "name": "tofu-log",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A developer debugging overlay for React Native Expo apps",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
