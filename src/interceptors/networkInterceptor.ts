@@ -2,7 +2,10 @@ import type { NetworkRequest } from '../types';
 import { generateId } from '../utils/generateId';
 
 type NetworkCallback = (request: NetworkRequest) => void;
-type NetworkUpdateCallback = (id: string, updates: Partial<NetworkRequest>) => void;
+type NetworkUpdateCallback = (
+  id: string,
+  updates: Partial<NetworkRequest>
+) => void;
 
 let isIntercepting = false;
 let onRequestStart: NetworkCallback | null = null;
@@ -20,13 +23,19 @@ function interceptFetch(): void {
   ): Promise<Response> {
     const id = generateId();
     const startTime = Date.now();
-    const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : (input as Request).url;
+    const url =
+      typeof input === 'string'
+        ? input
+        : input instanceof URL
+        ? input.toString()
+        : (input as Request).url;
     const method = init?.method || 'GET';
 
     let requestBody: unknown;
     if (init?.body) {
       try {
-        requestBody = typeof init.body === 'string' ? JSON.parse(init.body) : init.body;
+        requestBody =
+          typeof init.body === 'string' ? JSON.parse(init.body) : init.body;
       } catch {
         requestBody = init.body;
       }
@@ -108,14 +117,17 @@ function interceptFetch(): void {
 }
 
 function interceptXHR(): void {
-  const xhrData = new WeakMap<XMLHttpRequest, {
-    id: string;
-    method: string;
-    url: string;
-    startTime: number;
-    requestHeaders: Record<string, string>;
-    requestBody?: unknown;
-  }>();
+  const xhrData = new WeakMap<
+    XMLHttpRequest,
+    {
+      id: string;
+      method: string;
+      url: string;
+      startTime: number;
+      requestHeaders: Record<string, string>;
+      requestBody?: unknown;
+    }
+  >();
 
   XMLHttpRequest.prototype.open = function (
     method: string,
@@ -133,7 +145,14 @@ function interceptXHR(): void {
       requestHeaders: {},
     });
 
-    return originalXHROpen.call(this, method, url.toString(), async, username, password);
+    return originalXHROpen.call(
+      this,
+      method,
+      url.toString(),
+      async,
+      username,
+      password
+    );
   };
 
   XMLHttpRequest.prototype.setRequestHeader = function (
@@ -147,7 +166,17 @@ function interceptXHR(): void {
     return originalXHRSetRequestHeader.call(this, name, value);
   };
 
-  XMLHttpRequest.prototype.send = function (body?: Document | string | Blob | ArrayBufferView | ArrayBuffer | FormData | URLSearchParams | null): void {
+  XMLHttpRequest.prototype.send = function (
+    body?:
+      | Document
+      | string
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+      | null
+  ): void {
     const data = xhrData.get(this);
 
     if (data) {
@@ -188,14 +217,22 @@ function interceptXHR(): void {
 
         let responseBody: unknown;
         try {
-          const contentType = this.getResponseHeader('content-type') || '';
-          if (contentType.includes('application/json')) {
-            responseBody = JSON.parse(this.responseText);
+          if (!this.responseType || this.responseType === 'text') {
+            const contentType = this.getResponseHeader('content-type') || '';
+            if (contentType.includes('application/json')) {
+              responseBody = JSON.parse(this.responseText);
+            } else {
+              responseBody = this.responseText;
+            }
           } else {
-            responseBody = this.responseText;
+            responseBody = `[${this.responseType}]`;
           }
         } catch {
-          responseBody = this.responseText || '[Unable to parse response]';
+          if (!this.responseType || this.responseType === 'text') {
+            responseBody = this.responseText || '[Unable to parse response]';
+          } else {
+            responseBody = '[Unable to read response]';
+          }
         }
 
         if (onRequestEnd) {

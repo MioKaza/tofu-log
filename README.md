@@ -1,17 +1,47 @@
-# 🍃 TofuLog
+# 🪐 TofuLog
 
-A lightweight developer debugging overlay for React Native Expo apps. Inspect logs, network requests, crashes, and device info directly on your device.
+A lightweight developer debugging overlay for React Native Expo apps with a **Cyber-Y2K aesthetic**. Inspect logs, network requests, crashes, and device info directly on your device with beautiful terminal-style output.
 
 ## Features
 
-- 📋 **Smart Log Viewer** — Capture and filter console logs by level (log, info, warn, error, debug)
-- 🌐 **Network Inspector** — Monitor all fetch/XHR requests with headers, bodies, and timing
-- 💥 **Crash Reporter** — Automatic error boundary with stack traces and component trees
-- 📱 **Device Info** — View device, OS, app, and runtime information
-- 🍃 **Floating Action Button** — Draggable FAB to open the overlay
-- 📳 **Shake to Open** — Shake your device to toggle the debug panel
-- 🌙 **Dark Mode** — Beautiful dark theme optimized for debugging
-- 🚀 **Zero Config** — Works out of the box, auto-disabled in production
+### 🎨 Vibe Logger - Terminal-Style Console Output
+- **Cyber-Y2K aesthetic** with teal accents and monospace fonts
+- **Smart filtering** - Only warnings/errors show in Metro terminal by default (keeps it clean!)
+- **Full log history** - Everything is captured in the beautiful in-app overlay
+- **Push to Terminal** - Manually send any log to Metro with one tap
+- **Configurable** - Override terminal log level if you want to see everything
+
+### 📋 Smart Log Viewer
+- **Terminal-style UI** with ASCII rendering and kaomojis (◕‿◕)
+- **Filter by level** - log, info, warn, error, debug
+- **Search logs** - Find what you need fast
+- **Copy on long-press** - Share logs with your team
+- **Data preview** - See object/array contents inline
+
+### 🧠 AI-Ready Debugging
+- **Copy for AI** - One-click formatted context for ChatGPT/Claude
+- **Share reports** - Export crash reports and network requests
+- **Copy as cURL** - Replay network requests outside the app
+
+### 🌐 Network Inspector
+- Monitor all fetch/XHR requests with headers, bodies, and timing
+- Copy requests as cURL commands
+- View request/response bodies with syntax highlighting
+
+### 💥 Crash Reporter
+- Automatic error boundary with stack traces and component trees
+- Share crash reports for debugging
+- Copy formatted errors for AI assistance
+
+### 📱 Device Info
+- View device, OS, app, and runtime information
+- Helpful for debugging device-specific issues
+
+### 🪐 Beautiful UX
+- **Saturn FAB** - Draggable floating action button with teal glow
+- **Shake to Open** - Shake your device to toggle the debug panel
+- **Dark theme** - Cyber-Y2K inspired design optimized for debugging
+- **Zero Config** - Works out of the box, auto-disabled in production
 
 ## Installation
 
@@ -26,7 +56,7 @@ yarn add tofu-log
 This package requires the following Expo packages:
 
 ```bash
-npx expo install expo-sensors expo-device expo-constants
+npx expo install expo-sensors expo-device expo-constants expo-clipboard expo-file-system expo-sharing lucide-react-native
 ```
 
 ## Quick Start
@@ -51,21 +81,24 @@ That's it! The overlay is automatically enabled in development (`__DEV__`) and d
 
 ### Opening the Overlay
 
-- **Tap the FAB** — A floating 🍃 button appears on screen
+- **Tap the FAB** — A floating 🪐 Saturn button appears on screen (draggable!)
 - **Shake your device** — Shake gesture toggles the overlay
 
 ### Tabs
 
 | Tab | Description |
 |-----|-------------|
-| 📋 Logs | View console.log, warn, error, info, debug with search and filtering |
-| 🌐 Network | Inspect fetch/XHR requests, responses, headers, and timing |
-| 💥 Crashes | View captured errors with stack traces and component trees |
-| 📱 Device | See device model, OS version, app info, and runtime details |
+| 📋 Logs | Terminal-style log viewer with search, filtering, and push-to-terminal |
+| 🌐 Network | Inspect requests with Copy as cURL and detailed headers/bodies |
+| 💥 Crashes | Error reports with Copy for AI and Share functionality |
+| 📱 Device | Device model, OS version, app info, and runtime details |
 
 ## Configuration
 
 ```tsx
+import { DevOverlay, setTerminalLogLevel } from 'tofu-log';
+
+// Basic usage
 <DevOverlay
   enabled={true}           // Override __DEV__ check
   config={{
@@ -77,6 +110,11 @@ That's it! The overlay is automatically enabled in development (`__DEV__`) and d
 >
   <YourApp />
 </DevOverlay>
+
+// Customize terminal log level (optional)
+setTerminalLogLevel('all');  // Show all logs in Metro terminal
+setTerminalLogLevel('warn'); // Only warn/error (default - keeps terminal clean!)
+setTerminalLogLevel('error'); // Only errors
 ```
 
 ## API Reference
@@ -254,10 +292,15 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ### 0.1.0
 
-- Initial release
-- Console log interception with filtering
-- Network request inspection
-- Crash reporting with Error Boundary
-- Device info display
-- Shake gesture and FAB activation
-- Dark mode UI
+- 🎨 **Vibe Logger** - Cyber-Y2K terminal-style console output
+- 🎯 **Smart filtering** - Clean Metro terminal (only warn/error by default)
+- 🚀 **Push to Terminal** - Manually send any log to Metro with one tap
+- 📋 **Terminal-style Logs tab** - ASCII rendering, kaomojis, monospace fonts
+- 🧠 **AI-Ready** - Copy for AI, Share reports, Copy as cURL
+- 🪐 **Saturn FAB** - Beautiful draggable floating action button with teal theme
+- 🌐 **Network Inspector** - Monitor fetch/XHR with detailed headers/bodies
+- 💥 **Crash Reporter** - Error boundary with stack traces and component trees
+- 📱 **Device Info** - View device, OS, app, and runtime information
+- 📳 **Shake to Open** - Shake gesture to toggle debug panel
+- 🌙 **Dark Mode** - Cyber-Y2K inspired design
+- 🚀 **Zero Config** - Works out of the box, auto-disabled in production

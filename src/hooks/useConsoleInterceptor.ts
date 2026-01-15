@@ -18,7 +18,12 @@ export function useConsoleInterceptor() {
 
   useEffect(() => {
     if (config.enabled) {
-      startConsoleInterceptor(handleLog);
+      startConsoleInterceptor({
+        callback: handleLog,
+        enableVibe: true,
+        showBanner: true,
+        terminalLogLevel: 'warn', // Only warn/error to Metro terminal by default
+      });
     }
 
     return () => {

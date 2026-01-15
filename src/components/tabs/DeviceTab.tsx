@@ -30,13 +30,15 @@ export function DeviceTab() {
     name: Constants.expoConfig?.name,
     version: Constants.expoConfig?.version,
     sdkVersion: Constants.expoConfig?.sdkVersion,
-    bundleId: Constants.expoConfig?.ios?.bundleIdentifier || Constants.expoConfig?.android?.package,
+    bundleId:
+      Constants.expoConfig?.ios?.bundleIdentifier ||
+      Constants.expoConfig?.android?.package,
   };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>📱 Device</Text>
+        <Text style={styles.sectionTitle}>DEVICE</Text>
         <View style={styles.card}>
           <InfoRow label="Brand" value={deviceInfo?.brand} />
           <InfoRow label="Model" value={deviceInfo?.modelName} />
@@ -45,16 +47,19 @@ export function DeviceTab() {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>⚙️ System</Text>
+        <Text style={styles.sectionTitle}>SYSTEM</Text>
         <View style={styles.card}>
           <InfoRow label="OS" value={deviceInfo?.osName} />
           <InfoRow label="Version" value={deviceInfo?.osVersion} />
-          <InfoRow label="Memory" value={formatBytes(deviceInfo?.totalMemory)} />
+          <InfoRow
+            label="Memory"
+            value={formatBytes(deviceInfo?.totalMemory)}
+          />
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>📦 App</Text>
+        <Text style={styles.sectionTitle}>APP</Text>
         <View style={styles.card}>
           <InfoRow label="Name" value={appInfo.name} />
           <InfoRow label="Version" value={appInfo.version} />
@@ -64,10 +69,15 @@ export function DeviceTab() {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>🔧 Runtime</Text>
+        <Text style={styles.sectionTitle}>RUNTIME</Text>
         <View style={styles.card}>
           <InfoRow label="Debug Mode" value={__DEV__ ? 'Yes' : 'No'} />
-          <InfoRow label="Hermes" value={typeof HermesInternal !== 'undefined' ? 'Enabled' : 'Disabled'} />
+          <InfoRow
+            label="Hermes"
+            value={
+              typeof HermesInternal !== 'undefined' ? 'Enabled' : 'Disabled'
+            }
+          />
         </View>
       </View>
     </ScrollView>
@@ -77,39 +87,47 @@ export function DeviceTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 16,
   },
   content: {
     paddingBottom: 20,
+    paddingTop: 12,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   sectionTitle: {
-    color: '#888',
-    fontSize: 14,
+    color: '#9ca3af',
+    fontSize: 12,
     fontWeight: '600',
     marginBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   card: {
     backgroundColor: '#16162a',
-    borderRadius: 12,
-    padding: 4,
+    borderRadius: 8,
+    padding: 0,
+    borderWidth: 1,
+    borderColor: '#1f1f2e',
+    overflow: 'hidden',
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#1f1f3a',
+    borderBottomColor: '#1f1f2e',
   },
   label: {
-    color: '#888',
+    color: '#9ca3af',
     fontSize: 14,
+    fontWeight: '500',
   },
   value: {
-    color: '#e0e0e0',
+    color: '#e5e7eb',
     fontSize: 14,
     fontWeight: '500',
   },

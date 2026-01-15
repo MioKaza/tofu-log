@@ -59,31 +59,43 @@
     "jest": "^28.1.1",
     "pod-install": "^0.1.0",
     "prettier": "^2.0.5",
-    "react": "18.2.0",
-    "react-native": "0.72.6",
-    "react-native-builder-bob": "^0.20.0",
-    "release-it": "^15.0.0",
-    "typescript": "^5.0.2"
+    "react-native-builder-bob": "^0.20.0"
   },
   "peerDependencies": {
-    "react": ">=17.0.0",
-    "react-native": ">=0.70.0",
+    "expo-clipboard": "*",
     "expo-constants": "*",
     "expo-device": "*",
-    "expo-sensors": "*"
+    "expo-file-system": "*",
+    "expo-sensors": "*",
+    "expo-sharing": "*",
+    "lucide-react-native": "*",
+    "react": ">=17.0.0",
+    "react-native": ">=0.70.0",
+    "react-native-svg": "*"
   },
   "peerDependenciesMeta": {
+    "expo-clipboard": {
+      "optional": true
+    },
     "expo-constants": {
       "optional": true
     },
     "expo-device": {
       "optional": true
     },
+    "expo-file-system": {
+      "optional": true
+    },
     "expo-sensors": {
+      "optional": true
+    },
+    "expo-sharing": {
+      "optional": true
+    },
+    "react-native-svg": {
       "optional": true
     }
   },
-  "dependencies": {},
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [

@@ -5,9 +5,26 @@ import { DevOverlayContainer } from './components/DevOverlayContainer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import type { DevOverlayConfig, CrashReport } from './types';
 
-export type { LogEntry, NetworkRequest, CrashReport, DeviceInfo, DevOverlayConfig, TabName, LogLevel } from './types';
+export type {
+  LogEntry,
+  NetworkRequest,
+  CrashReport,
+  DeviceInfo,
+  DevOverlayConfig,
+  TabName,
+  LogLevel,
+} from './types';
 export { useDevOverlay, DevOverlayProvider } from './context/DevOverlayContext';
 export { ErrorBoundary } from './components/ErrorBoundary';
+export { TestBench } from './components';
+export { 
+  setVibeEnabled, 
+  isVibeEnabled,
+  setTerminalLogLevel,
+  getTerminalLogLevel,
+  pushLogToTerminal,
+} from './interceptors/consoleInterceptor';
+export * from './vibe/theme';
 
 interface DevOverlayProps {
   children: React.ReactNode;
@@ -15,7 +32,11 @@ interface DevOverlayProps {
   enabled?: boolean;
 }
 
-function DevOverlayWithErrorBoundary({ children }: { children: React.ReactNode }) {
+function DevOverlayWithErrorBoundary({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { addCrashReport } = useDevOverlay();
 
   const handleError = (report: CrashReport) => {
@@ -29,7 +50,10 @@ function DevOverlayWithErrorBoundary({ children }: { children: React.ReactNode }
   );
 }
 
-function DevOverlayInternal({ children, config }: Omit<DevOverlayProps, 'enabled'>) {
+function DevOverlayInternal({
+  children,
+  config,
+}: Omit<DevOverlayProps, 'enabled'>) {
   return (
     <DevOverlayProvider config={config}>
       <DevOverlayWithErrorBoundary>{children}</DevOverlayWithErrorBoundary>

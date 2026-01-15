@@ -7,19 +7,23 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
+  Alert,
 } from 'react-native';
 import { useDevOverlay } from '../../context/DevOverlayContext';
 import type { NetworkRequest } from '../../types';
+import { TrashIcon, CloseIcon, CopyIcon } from '../Icons';
+import { formatNetworkAsCurl, copyToClipboard } from '../../utils/clipboard';
 
 const STATUS_COLORS: Record<string, string> = {
-  pending: '#fbbf24',
-  success: '#4ade80',
-  error: '#f87171',
+  pending: '#fbbf24', // amber-400
+  success: '#4ade80', // green-400
+  error: '#f87171',   // red-400
 };
 
 function getStatusColor(request: NetworkRequest): string {
   if (!request.status) return STATUS_COLORS.pending;
-  if (request.status >= 200 && request.status < 300) return STATUS_COLORS.success;
+  if (request.status >= 200 && request.status < 300)
+    return STATUS_COLORS.success;
   return STATUS_COLORS.error;
 }
 
@@ -31,13 +35,13 @@ function formatDuration(ms?: number): string {
 
 function getMethodColor(method: string): string {
   const colors: Record<string, string> = {
-    GET: '#60a5fa',
-    POST: '#4ade80',
-    PUT: '#fbbf24',
-    PATCH: '#a78bfa',
-    DELETE: '#f87171',
+    GET: '#60a5fa',    // blue-400
+    POST: '#4ade80',   // green-400
+    PUT: '#fbbf24',    // amber-400
+    PATCH: '#a78bfa',  // purple-400
+    DELETE: '#f87171', // red-400
   };
-  return colors[method] || '#888';
+  return colors[method] || '#9ca3af';
 }
 
 function formatJson(data: unknown): string {
@@ -56,10 +60,22 @@ interface RequestDetailsModalProps {
   onClose: () => void;
 }
 
-function RequestDetailsModal({ request, visible, onClose }: RequestDetailsModalProps) {
-  const [activeSection, setActiveSection] = useState<'request' | 'response'>('response');
+function RequestDetailsModal({
+  request,
+  visible,
+  onClose,
+}: RequestDetailsModalProps) {
+  const [activeSection, setActiveSection] = useState<'request' | 'response'>(
+    'response'
+  );
 
   if (!request) return null;
+
+  const handleCopyCurl = async () => {
+    const curl = formatNetworkAsCurl(request);
+    await copyToClipboard(curl);
+    Alert.alert('Copied', 'cURL command copied to clipboard');
+  };
 
   const sections = ['request', 'response'] as const;
 
@@ -74,16 +90,26 @@ function RequestDetailsModal({ request, visible, onClose }: RequestDetailsModalP
         <View style={modalStyles.container}>
           <View style={modalStyles.header}>
             <View style={modalStyles.headerInfo}>
-              <Text style={[modalStyles.method, { color: getMethodColor(request.method) }]}>
+              <Text
+                style={[
+                  modalStyles.method,
+                  { color: getMethodColor(request.method) },
+                ]}
+              >
                 {request.method}
               </Text>
               <Text style={modalStyles.status}>
                 {request.status || 'Pending'}
               </Text>
             </View>
-            <TouchableOpacity onPress={onClose} style={modalStyles.closeButton}>
-              <Text style={modalStyles.closeText}>✕</Text>
-            </TouchableOpacity>
+            <View style={modalStyles.actions}>
+              <TouchableOpacity onPress={handleCopyCurl} style={modalStyles.actionButton}>
+                <CopyIcon color="#cad3f5" size={20} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onClose} style={modalStyles.closeButton}>
+                <CloseIcon color="#9ca3af" size={24} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <Text style={modalStyles.url} numberOfLines={2}>
@@ -154,7 +180,12 @@ function RequestDetailsModal({ request, visible, onClose }: RequestDetailsModalP
                 {request.error && (
                   <>
                     <Text style={modalStyles.sectionTitle}>Error</Text>
-                    <View style={[modalStyles.codeBlock, { borderColor: '#f87171' }]}>
+                    <View
+                      style={[
+                        modalStyles.codeBlock,
+                        { borderColor: '#f87171' },
+                      ]}
+                    >
                       <Text style={[modalStyles.code, { color: '#f87171' }]}>
                         {request.error}
                       </Text>
@@ -172,7 +203,9 @@ function RequestDetailsModal({ request, visible, onClose }: RequestDetailsModalP
 
 export function NetworkTab() {
   const { networkRequests, clearNetworkRequests } = useDevOverlay();
-  const [selectedRequest, setSelectedRequest] = useState<NetworkRequest | null>(null);
+  const [selectedRequest, setSelectedRequest] = useState<NetworkRequest | null>(
+    null
+  );
 
   const renderRequestItem = ({ item }: { item: NetworkRequest }) => {
     const statusColor = getStatusColor(item);
@@ -185,13 +218,18 @@ export function NetworkTab() {
         activeOpacity={0.7}
       >
         <View style={styles.requestHeader}>
-          <View style={[styles.methodBadge, { backgroundColor: getMethodColor(item.method) }]}>
-            <Text style={styles.methodText}>{item.method}</Text>
+          <View
+            style={[
+              styles.methodBadge,
+              { backgroundColor: getMethodColor(item.method) + '20' }, // 20% opacity bg
+            ]}
+          >
+            <Text style={[styles.methodText, { color: getMethodColor(item.method) }]}>
+              {item.method}
+            </Text>
           </View>
           <View style={[styles.statusDot, { backgroundColor: statusColor }]} />
-          <Text style={styles.statusText}>
-            {item.status || '...'}
-          </Text>
+          <Text style={styles.statusText}>{item.status || '...'}</Text>
           <Text style={styles.duration}>{formatDuration(item.duration)}</Text>
         </View>
         <Text style={styles.url} numberOfLines={1}>
@@ -208,10 +246,14 @@ export function NetworkTab() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.count}>
-          {networkRequests.length} request{networkRequests.length !== 1 ? 's' : ''}
+          {networkRequests.length} request
+          {networkRequests.length !== 1 ? 's' : ''}
         </Text>
-        <TouchableOpacity style={styles.clearButton} onPress={clearNetworkRequests}>
-          <Text style={styles.clearButtonText}>Clear</Text>
+        <TouchableOpacity
+          style={styles.clearButton}
+          onPress={clearNetworkRequests}
+        >
+          <TrashIcon color="#9ca3af" size={20} />
         </TouchableOpacity>
       </View>
 
@@ -241,27 +283,26 @@ export function NetworkTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 16,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
+    marginTop: 12,
   },
   count: {
-    color: '#888',
-    fontSize: 14,
+    color: '#9ca3af',
+    fontSize: 13,
+    fontWeight: '500',
   },
   clearButton: {
-    backgroundColor: '#ef4444',
+    padding: 6,
+    backgroundColor: '#1f1f2e',
     borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  clearButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 12,
+    borderWidth: 1,
+    borderColor: '#333',
   },
   list: {
     flex: 1,
@@ -270,10 +311,9 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   requestItem: {
-    backgroundColor: '#16162a',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#1f1f2e',
+    paddingVertical: 12,
   },
   requestHeader: {
     flexDirection: 'row',
@@ -287,43 +327,45 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   methodText: {
-    color: '#fff',
     fontSize: 10,
     fontWeight: '700',
   },
   statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 4,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginRight: 6,
   },
   statusText: {
-    color: '#888',
+    color: '#9ca3af',
     fontSize: 12,
     marginRight: 8,
+    fontWeight: '500',
   },
   duration: {
-    color: '#666',
+    color: '#6b7280',
     fontSize: 11,
     marginLeft: 'auto',
+    fontFamily: 'monospace',
   },
   url: {
-    color: '#e0e0e0',
+    color: '#e5e7eb',
     fontSize: 14,
     fontWeight: '500',
     marginBottom: 2,
   },
   fullUrl: {
-    color: '#666',
+    color: '#6b7280',
     fontSize: 11,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 40,
   },
   emptyText: {
-    color: '#666',
+    color: '#6b7280',
     fontSize: 14,
   },
 });
@@ -335,58 +377,70 @@ const modalStyles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   container: {
-    backgroundColor: '#1a1a2e',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: '#111111',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     height: '85%',
-    padding: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 10,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 16,
   },
   headerInfo: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
   },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  actionButton: {
+    padding: 4,
+  },
   method: {
     fontSize: 16,
     fontWeight: '700',
   },
   status: {
-    color: '#888',
+    color: '#9ca3af',
     fontSize: 14,
+    fontWeight: '500',
   },
   closeButton: {
-    padding: 8,
-  },
-  closeText: {
-    color: '#888',
-    fontSize: 18,
+    padding: 4,
   },
   url: {
-    color: '#e0e0e0',
-    fontSize: 13,
-    marginBottom: 8,
+    color: '#e5e7eb',
+    fontSize: 14,
+    marginBottom: 16,
+    lineHeight: 20,
   },
   meta: {
     flexDirection: 'row',
     gap: 16,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   metaText: {
-    color: '#666',
+    color: '#6b7280',
     fontSize: 12,
+    fontFamily: 'monospace',
   },
   tabs: {
     flexDirection: 'row',
-    backgroundColor: '#16162a',
+    backgroundColor: '#1f1f2e',
     borderRadius: 8,
     padding: 4,
-    marginBottom: 12,
+    marginBottom: 16,
   },
   tab: {
     flex: 1,
@@ -395,36 +449,40 @@ const modalStyles = StyleSheet.create({
     borderRadius: 6,
   },
   tabActive: {
-    backgroundColor: '#2d2d4a',
+    backgroundColor: '#333',
   },
   tabText: {
-    color: '#666',
-    fontSize: 14,
+    color: '#6b7280',
+    fontSize: 13,
     fontWeight: '500',
   },
   tabTextActive: {
     color: '#fff',
+    fontWeight: '600',
   },
   content: {
     flex: 1,
   },
   sectionTitle: {
-    color: '#888',
+    color: '#9ca3af',
     fontSize: 12,
     fontWeight: '600',
     marginBottom: 8,
     marginTop: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   codeBlock: {
-    backgroundColor: '#16162a',
+    backgroundColor: '#1f1f2e',
     borderRadius: 8,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#2d2d4a',
+    borderColor: '#333',
   },
   code: {
-    color: '#e0e0e0',
+    color: '#d1d5db',
     fontSize: 12,
     fontFamily: 'monospace',
+    lineHeight: 18,
   },
 });

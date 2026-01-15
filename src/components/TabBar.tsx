@@ -1,18 +1,19 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import type { TabName } from '../types';
+import { LogsIcon, NetworkIcon, CrashesIcon, DeviceIcon } from './Icons';
 
 interface Tab {
   key: TabName;
   label: string;
-  icon: string;
+  Icon: React.ElementType;
 }
 
 const TABS: Tab[] = [
-  { key: 'logs', label: 'Logs', icon: '📋' },
-  { key: 'network', label: 'Network', icon: '🌐' },
-  { key: 'crashes', label: 'Crashes', icon: '💥' },
-  { key: 'device', label: 'Device', icon: '📱' },
+  { key: 'logs', label: 'Logs', Icon: LogsIcon },
+  { key: 'network', label: 'Network', Icon: NetworkIcon },
+  { key: 'crashes', label: 'Crashes', Icon: CrashesIcon },
+  { key: 'device', label: 'Device', Icon: DeviceIcon },
 ];
 
 interface TabBarProps {
@@ -32,7 +33,11 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
             onPress={() => onTabChange(tab.key)}
             activeOpacity={0.7}
           >
-            <Text style={styles.icon}>{tab.icon}</Text>
+            <tab.Icon
+              color={isActive ? '#e8e8e8' : '#8888aa'}
+              size={18}
+              strokeWidth={isActive ? 2 : 1.5}
+            />
             <Text style={[styles.label, isActive && styles.activeLabel]}>
               {tab.label}
             </Text>
@@ -46,34 +51,33 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#16162a',
-    borderRadius: 12,
-    padding: 4,
-    marginHorizontal: 16,
-    marginBottom: 12,
+    backgroundColor: '#0d0d12', // Dark gray, almost black
+    borderBottomWidth: 1,
+    borderBottomColor: '#1a1a1f',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 0,
   },
   tab: {
     flex: 1,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 8,
-    borderRadius: 8,
+    paddingVertical: 12,
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
+    gap: 6,
   },
   activeTab: {
-    backgroundColor: '#2d2d4a',
-  },
-  icon: {
-    fontSize: 16,
-    marginRight: 6,
+    borderBottomColor: '#6366f1',
   },
   label: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#8888aa',
     fontWeight: '500',
+    letterSpacing: 0.2,
   },
   activeLabel: {
-    color: '#ffffff',
+    color: '#e8e8e8', // Off-white instead of pure white
+    fontWeight: '600',
   },
 });

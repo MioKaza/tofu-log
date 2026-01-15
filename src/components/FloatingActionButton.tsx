@@ -4,9 +4,9 @@ import {
   PanResponder,
   StyleSheet,
   TouchableOpacity,
-  Text,
   Dimensions,
 } from 'react-native';
+import { SaturnIcon } from './SaturnIcon';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const FAB_SIZE = 56;
@@ -49,7 +49,10 @@ export function FloatingActionButton({
         );
         const finalY = Math.max(
           50,
-          Math.min(SCREEN_HEIGHT - FAB_SIZE - 50, gestureState.moveY - FAB_SIZE / 2)
+          Math.min(
+            SCREEN_HEIGHT - FAB_SIZE - 50,
+            gestureState.moveY - FAB_SIZE / 2
+          )
         );
 
         Animated.spring(pan, {
@@ -76,7 +79,7 @@ export function FloatingActionButton({
         onPress={onPress}
         activeOpacity={0.8}
       >
-        <Text style={styles.icon}>🍃</Text>
+        <SaturnIcon size={FAB_SIZE} color="#e8e8e8" backgroundColor="#3DB6B1" />
       </TouchableOpacity>
     </Animated.View>
   );
@@ -91,16 +94,12 @@ const styles = StyleSheet.create({
     width: FAB_SIZE,
     height: FAB_SIZE,
     borderRadius: FAB_SIZE / 2,
-    backgroundColor: '#4ade80',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 4,
+    shadowRadius: 8,
     elevation: 8,
-  },
-  icon: {
-    fontSize: 24,
   },
 });

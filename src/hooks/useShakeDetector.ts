@@ -20,7 +20,8 @@ export function useShakeDetector({
   useEffect(() => {
     if (!enabled) return;
 
-    let subscription: ReturnType<typeof Accelerometer.addListener> | null = null;
+    let subscription: ReturnType<typeof Accelerometer.addListener> | null =
+      null;
 
     const startListening = async () => {
       try {

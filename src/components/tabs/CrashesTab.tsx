@@ -7,9 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
+  Alert,
 } from 'react-native';
 import { useDevOverlay } from '../../context/DevOverlayContext';
 import type { CrashReport } from '../../types';
+import { TrashIcon, CloseIcon, CrashesIcon, ShareIcon, CopyIcon } from '../Icons';
+import { formatCrashForAI, copyToClipboard, shareFile } from '../../utils/clipboard';
 
 interface CrashDetailsModalProps {
   crash: CrashReport | null;
@@ -17,8 +20,23 @@ interface CrashDetailsModalProps {
   onClose: () => void;
 }
 
-function CrashDetailsModal({ crash, visible, onClose }: CrashDetailsModalProps) {
+function CrashDetailsModal({
+  crash,
+  visible,
+  onClose,
+}: CrashDetailsModalProps) {
   if (!crash) return null;
+
+  const handleCopyForAI = async () => {
+    const text = formatCrashForAI(crash);
+    await copyToClipboard(text);
+    Alert.alert('Copied', 'Crash report formatted for AI and copied to clipboard.');
+  };
+
+  const handleShareReport = async () => {
+    const text = formatCrashForAI(crash);
+    await shareFile(`crash-report-${crash.timestamp}.txt`, text);
+  };
 
   return (
     <Modal
@@ -31,9 +49,17 @@ function CrashDetailsModal({ crash, visible, onClose }: CrashDetailsModalProps) 
         <View style={modalStyles.container}>
           <View style={modalStyles.header}>
             <Text style={modalStyles.title}>Crash Report</Text>
-            <TouchableOpacity onPress={onClose} style={modalStyles.closeButton}>
-              <Text style={modalStyles.closeText}>✕</Text>
-            </TouchableOpacity>
+            <View style={modalStyles.actions}>
+              <TouchableOpacity onPress={handleCopyForAI} style={modalStyles.actionButton}>
+                <CopyIcon color="#cad3f5" size={20} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleShareReport} style={modalStyles.actionButton}>
+                <ShareIcon color="#cad3f5" size={20} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onClose} style={modalStyles.closeButton}>
+                <CloseIcon color="#cad3f5" size={24} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <ScrollView style={modalStyles.content}>
@@ -41,7 +67,9 @@ function CrashDetailsModal({ crash, visible, onClose }: CrashDetailsModalProps) 
               <Text style={modalStyles.sectionTitle}>Error</Text>
               <View style={modalStyles.errorBox}>
                 <Text style={modalStyles.errorName}>{crash.error.name}</Text>
-                <Text style={modalStyles.errorMessage}>{crash.error.message}</Text>
+                <Text style={modalStyles.errorMessage}>
+                  {crash.error.message}
+                </Text>
               </View>
             </View>
 
@@ -91,7 +119,7 @@ export function CrashesTab() {
       >
         <View style={styles.crashHeader}>
           <View style={styles.errorBadge}>
-            <Text style={styles.badgeText}>💥</Text>
+            <CrashesIcon color="#ef4444" size={20} />
           </View>
           <Text style={styles.errorName}>{item.error.name}</Text>
           <Text style={styles.timestamp}>{time}</Text>
@@ -114,14 +142,17 @@ export function CrashesTab() {
         <Text style={styles.count}>
           {crashReports.length} crash{crashReports.length !== 1 ? 'es' : ''}
         </Text>
-        <TouchableOpacity style={styles.clearButton} onPress={clearCrashReports}>
-          <Text style={styles.clearButtonText}>Clear</Text>
+        <TouchableOpacity
+          style={styles.clearButton}
+          onPress={clearCrashReports}
+        >
+          <TrashIcon color="#9ca3af" size={20} />
         </TouchableOpacity>
       </View>
 
       {crashReports.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyIcon}>✨</Text>
+          <CrashesIcon color="#10b981" size={48} />
           <Text style={styles.emptyText}>No crashes recorded</Text>
           <Text style={styles.emptySubtext}>Your app is running smoothly!</Text>
         </View>
@@ -147,27 +178,26 @@ export function CrashesTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 16,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
+    marginTop: 12,
   },
   count: {
-    color: '#888',
-    fontSize: 14,
+    color: '#9ca3af',
+    fontSize: 13,
+    fontWeight: '500',
   },
   clearButton: {
-    backgroundColor: '#ef4444',
+    padding: 6,
+    backgroundColor: '#1f1f2e',
     borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  clearButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 12,
+    borderWidth: 1,
+    borderColor: '#333',
   },
   list: {
     flex: 1,
@@ -176,7 +206,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   crashItem: {
-    backgroundColor: '#16162a',
+    backgroundColor: '#16162a', // Keeping card bg slightly distinct
     borderRadius: 8,
     padding: 12,
     marginBottom: 8,
@@ -191,9 +221,6 @@ const styles = StyleSheet.create({
   errorBadge: {
     marginRight: 8,
   },
-  badgeText: {
-    fontSize: 16,
-  },
   errorName: {
     color: '#f87171',
     fontSize: 14,
@@ -201,16 +228,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   timestamp: {
-    color: '#666',
+    color: '#6b7280',
     fontSize: 11,
+    fontFamily: 'monospace',
   },
   errorMessage: {
-    color: '#e0e0e0',
+    color: '#e5e7eb',
     fontSize: 13,
     marginBottom: 6,
+    lineHeight: 18,
   },
   stackPreview: {
-    color: '#666',
+    color: '#9ca3af',
     fontSize: 11,
     fontFamily: 'monospace',
   },
@@ -218,18 +247,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  emptyIcon: {
-    fontSize: 48,
-    marginBottom: 12,
+    marginTop: 40,
   },
   emptyText: {
-    color: '#4ade80',
+    color: '#10b981',
     fontSize: 16,
     fontWeight: '600',
+    marginTop: 12,
   },
   emptySubtext: {
-    color: '#666',
+    color: '#6b7280',
     fontSize: 14,
     marginTop: 4,
   },
@@ -242,41 +269,53 @@ const modalStyles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   container: {
-    backgroundColor: '#1a1a2e',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: '#111111',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     height: '85%',
-    padding: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 10,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
     color: '#fff',
   },
-  closeButton: {
-    padding: 8,
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
-  closeText: {
-    color: '#888',
-    fontSize: 18,
+  actionButton: {
+    padding: 4,
+  },
+  closeButton: {
+    padding: 4,
+    marginLeft: 4,
   },
   content: {
     flex: 1,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   sectionTitle: {
-    color: '#888',
+    color: '#9ca3af',
     fontSize: 12,
     fontWeight: '600',
     marginBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   errorBox: {
     backgroundColor: '#2d1f1f',
@@ -287,29 +326,30 @@ const modalStyles = StyleSheet.create({
   },
   errorName: {
     color: '#f87171',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
     marginBottom: 4,
   },
   errorMessage: {
-    color: '#e0e0e0',
+    color: '#e5e7eb',
     fontSize: 14,
+    lineHeight: 20,
   },
   codeBlock: {
-    backgroundColor: '#16162a',
+    backgroundColor: '#1f1f2e',
     borderRadius: 8,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#2d2d4a',
+    borderColor: '#333',
   },
   code: {
-    color: '#a0a0a0',
+    color: '#d1d5db',
     fontSize: 11,
     fontFamily: 'monospace',
     lineHeight: 16,
   },
   timestamp: {
-    color: '#e0e0e0',
+    color: '#e5e7eb',
     fontSize: 14,
   },
 });
