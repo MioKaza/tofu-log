@@ -5,3 +5,4 @@ ios/
 .expo/
 *.log
 .DS_Store
+.npmrc
