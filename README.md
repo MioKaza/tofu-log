@@ -1,11 +1,11 @@
 # 🪐 TofuLog
 
-A lightweight developer debugging overlay for React Native Expo apps with a **Cyber-Y2K aesthetic**. Inspect logs, network requests, crashes, and device info directly on your device with beautiful terminal-style output.
+A lightweight developer debugging overlay for React Native Expo apps with a polished terminal-inspired experience. Inspect logs, network requests, crashes, and device info directly on your device with beautiful terminal-style output.
 
 ## Features
 
 ### 🎨 Vibe Logger - Terminal-Style Console Output
-- **Cyber-Y2K aesthetic** with teal accents and monospace fonts
+- **High-contrast terminal styling** with teal accents and monospace fonts
 - **Smart filtering** - Only warnings/errors show in Metro terminal by default (keeps it clean!)
 - **Full log history** - Everything is captured in the beautiful in-app overlay
 - **Push to Terminal** - Manually send any log to Metro with one tap
@@ -40,7 +40,7 @@ A lightweight developer debugging overlay for React Native Expo apps with a **Cy
 ### 🪐 Beautiful UX
 - **Saturn FAB** - Draggable floating action button with teal glow
 - **Shake to Open** - Shake your device to toggle the debug panel
-- **Dark theme** - Cyber-Y2K inspired design optimized for debugging
+- **Dark theme** - Purpose-built for late-night debugging sessions
 - **Zero Config** - Works out of the box, auto-disabled in production
 
 ## Installation
@@ -292,7 +292,7 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ### 0.1.0
 
-- 🎨 **Vibe Logger** - Cyber-Y2K terminal-style console output
+- 🎨 **Vibe Logger** - Terminal-style console output
 - 🎯 **Smart filtering** - Clean Metro terminal (only warn/error by default)
 - 🚀 **Push to Terminal** - Manually send any log to Metro with one tap
 - 📋 **Terminal-style Logs tab** - ASCII rendering, kaomojis, monospace fonts
@@ -302,5 +302,5 @@ Contributions are welcome! Please open an issue or submit a pull request.
 - 💥 **Crash Reporter** - Error boundary with stack traces and component trees
 - 📱 **Device Info** - View device, OS, app, and runtime information
 - 📳 **Shake to Open** - Shake gesture to toggle debug panel
-- 🌙 **Dark Mode** - Cyber-Y2K inspired design
+- 🌙 **Dark Mode** - Designed for long debugging sessions
 - 🚀 **Zero Config** - Works out of the box, auto-disabled in production
