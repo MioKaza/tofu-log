@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { DevOverlayProvider, useDevOverlay } from './context/DevOverlayContext';
 import { DevOverlayContainer } from './components/DevOverlayContainer';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -62,7 +62,7 @@ function DevOverlayInternal({
 }
 
 function PassThrough({ children }: { children: React.ReactNode }) {
-  return <View style={{ flex: 1 }}>{children}</View>;
+  return <View style={styles.passThrough}>{children}</View>;
 }
 
 export function DevOverlay({ children, config, enabled }: DevOverlayProps) {
@@ -74,3 +74,9 @@ export function DevOverlay({ children, config, enabled }: DevOverlayProps) {
 
   return <DevOverlayInternal config={config}>{children}</DevOverlayInternal>;
 }
+
+const styles = StyleSheet.create({
+  passThrough: {
+    flex: 1,
+  },
+});

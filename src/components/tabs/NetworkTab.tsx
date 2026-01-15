@@ -180,13 +180,8 @@ function RequestDetailsModal({
                 {request.error && (
                   <>
                     <Text style={modalStyles.sectionTitle}>Error</Text>
-                    <View
-                      style={[
-                        modalStyles.codeBlock,
-                        { borderColor: '#f87171' },
-                      ]}
-                    >
-                      <Text style={[modalStyles.code, { color: '#f87171' }]}>
+                    <View style={[modalStyles.codeBlock, modalStyles.errorBlock]}>
+                      <Text style={[modalStyles.code, modalStyles.errorText]}>
                         {request.error}
                       </Text>
                     </View>
@@ -284,6 +279,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
+    backgroundColor: '#12121a',
+  },
+  errorBadge: {
+    marginTop: 4,
+    paddingHorizontal: 8,
   },
   header: {
     flexDirection: 'row',
@@ -484,5 +484,11 @@ const modalStyles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'monospace',
     lineHeight: 18,
+  },
+  errorBlock: {
+    borderColor: '#f87171',
+  },
+  errorText: {
+    color: '#f87171',
   },
 });

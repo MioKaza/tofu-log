@@ -34,13 +34,13 @@
     "logging",
     "crash-reporter"
   ],
-  "repository": "https://github.com/yourusername/tofu-log",
-  "author": "Sergio Morales <your@email.com> (https://github.com/yourusername)",
+  "repository": "https://github.com/MioKaza/TofuLogsJS",
+  "author": "Mio Kaza",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yourusername/tofu-log/issues"
+    "url": "https://github.com/MioKaza/TofuLogsJS/issues"
   },
-  "homepage": "https://github.com/yourusername/tofu-log#readme",
+  "homepage": "https://github.com/MioKaza/TofuLogsJS#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -59,7 +59,8 @@
     "jest": "^28.1.1",
     "pod-install": "^0.1.0",
     "prettier": "^2.0.5",
-    "react-native-builder-bob": "^0.20.0"
+    "react-native-builder-bob": "^0.20.0",
+    "typescript": "5.1"
   },
   "peerDependencies": {
     "expo-clipboard": "*",
