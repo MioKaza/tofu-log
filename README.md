@@ -4,40 +4,40 @@ A lightweight developer debugging overlay for React Native Expo apps with a poli
 
 ## Features
 
-### 🎨 Vibe Logger - Terminal-Style Console Output
+### Vibe Logger - Terminal-Style Console Output
 - **High-contrast terminal styling** with teal accents and monospace fonts
 - **Smart filtering** - Only warnings/errors show in Metro terminal by default (keeps it clean!)
 - **Full log history** - Everything is captured in the beautiful in-app overlay
 - **Push to Terminal** - Manually send any log to Metro with one tap
 - **Configurable** - Override terminal log level if you want to see everything
 
-### 📋 Smart Log Viewer
-- **Terminal-style UI** with ASCII rendering and kaomojis (◕‿◕)
+### Smart Log Viewer
+- **Terminal-style UI** with ASCII rendering
 - **Filter by level** - log, info, warn, error, debug
 - **Search logs** - Find what you need fast
 - **Copy on long-press** - Share logs with your team
 - **Data preview** - See object/array contents inline
 
-### 🧠 AI-Ready Debugging
+### AI-Ready Debugging
 - **Copy for AI** - One-click formatted context for ChatGPT/Claude
 - **Share reports** - Export crash reports and network requests
 - **Copy as cURL** - Replay network requests outside the app
 
-### 🌐 Network Inspector
+### Network Inspector
 - Monitor all fetch/XHR requests with headers, bodies, and timing
 - Copy requests as cURL commands
 - View request/response bodies with syntax highlighting
 
-### 💥 Crash Reporter
+### Crash Reporter
 - Automatic error boundary with stack traces and component trees
 - Share crash reports for debugging
 - Copy formatted errors for AI assistance
 
-### 📱 Device Info
+### Device Info
 - View device, OS, app, and runtime information
 - Helpful for debugging device-specific issues
 
-### 🪐 Beautiful UX
+### Beautiful UX
 - **Saturn FAB** - Draggable floating action button with teal glow
 - **Shake to Open** - Shake your device to toggle the debug panel
 - **Dark theme** - Purpose-built for late-night debugging sessions
@@ -81,17 +81,17 @@ That's it! The overlay is automatically enabled in development (`__DEV__`) and d
 
 ### Opening the Overlay
 
-- **Tap the FAB** — A floating 🪐 Saturn button appears on screen (draggable!)
+- **Tap the FAB** — A floating Saturn button appears on screen (draggable!)
 - **Shake your device** — Shake gesture toggles the overlay
 
 ### Tabs
 
 | Tab | Description |
 |-----|-------------|
-| 📋 Logs | Terminal-style log viewer with search, filtering, and push-to-terminal |
-| 🌐 Network | Inspect requests with Copy as cURL and detailed headers/bodies |
-| 💥 Crashes | Error reports with Copy for AI and Share functionality |
-| 📱 Device | Device model, OS version, app info, and runtime details |
+| Logs | Terminal-style log viewer with search, filtering, and push-to-terminal |
+| Network | Inspect requests with Copy as cURL and detailed headers/bodies |
+| Crashes | Error reports with Copy for AI and Share functionality |
+| Device | Device model, OS version, app info, and runtime details |
 
 ## Configuration
 
@@ -292,15 +292,15 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ### 0.1.0
 
-- 🎨 **Vibe Logger** - Terminal-style console output
-- 🎯 **Smart filtering** - Clean Metro terminal (only warn/error by default)
-- 🚀 **Push to Terminal** - Manually send any log to Metro with one tap
-- 📋 **Terminal-style Logs tab** - ASCII rendering, kaomojis, monospace fonts
-- 🧠 **AI-Ready** - Copy for AI, Share reports, Copy as cURL
-- 🪐 **Saturn FAB** - Beautiful draggable floating action button with teal theme
-- 🌐 **Network Inspector** - Monitor fetch/XHR with detailed headers/bodies
-- 💥 **Crash Reporter** - Error boundary with stack traces and component trees
-- 📱 **Device Info** - View device, OS, app, and runtime information
-- 📳 **Shake to Open** - Shake gesture to toggle debug panel
-- 🌙 **Dark Mode** - Designed for long debugging sessions
-- 🚀 **Zero Config** - Works out of the box, auto-disabled in production
+- **Vibe Logger** - Terminal-style console output
+- **Smart filtering** - Clean Metro terminal (only warn/error by default)
+- **Push to Terminal** - Manually send any log to Metro with one tap
+- **Terminal-style Logs tab** - ASCII rendering, monospace fonts
+- **AI-Ready** - Copy for AI, Share reports, Copy as cURL
+- **Saturn FAB** - Beautiful draggable floating action button with teal theme
+- **Network Inspector** - Monitor fetch/XHR with detailed headers/bodies
+- **Crash Reporter** - Error boundary with stack traces and component trees
+- **Device Info** - View device, OS, app, and runtime information
+- **Shake to Open** - Shake gesture to toggle debug panel
+- **Dark Mode** - Designed for long debugging sessions
+- **Zero Config** - Works out of the box, auto-disabled in production
