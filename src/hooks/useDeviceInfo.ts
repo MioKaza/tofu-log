@@ -1,11 +1,23 @@
 import { useState, useEffect } from 'react';
-import * as Device from 'expo-device';
 import type { DeviceInfo } from '../types';
+
+// Lazy load expo-device to avoid native module errors
+let Device: any = null;
+try {
+  Device = require('expo-device');
+} catch (e) {
+  console.warn('[TofuLog] expo-device not available');
+}
 
 export function useDeviceInfo(): DeviceInfo | null {
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo | null>(null);
 
   useEffect(() => {
+    if (!Device) {
+      console.warn('[TofuLog] Device info not available');
+      return;
+    }
+
     async function gatherDeviceInfo() {
       try {
         const info: DeviceInfo = {
@@ -28,17 +40,18 @@ export function useDeviceInfo(): DeviceInfo | null {
   return deviceInfo;
 }
 
-function getDeviceTypeName(type: Device.DeviceType | null): string | undefined {
-  if (type === null) return undefined;
+function getDeviceTypeName(type: number | null): string | undefined {
+  if (type === null || !Device) return undefined;
 
+  // DeviceType enum values: UNKNOWN=0, PHONE=1, TABLET=2, DESKTOP=3, TV=4
   switch (type) {
-    case Device.DeviceType.PHONE:
+    case 1: // PHONE
       return 'Phone';
-    case Device.DeviceType.TABLET:
+    case 2: // TABLET
       return 'Tablet';
-    case Device.DeviceType.DESKTOP:
+    case 3: // DESKTOP
       return 'Desktop';
-    case Device.DeviceType.TV:
+    case 4: // TV
       return 'TV';
     default:
       return 'Unknown';

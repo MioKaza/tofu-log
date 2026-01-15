@@ -1,7 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import Constants from 'expo-constants';
 import { useDeviceInfo } from '../../hooks/useDeviceInfo';
+
+// Lazy load expo-constants to avoid native module errors
+let Constants: any = null;
+try {
+  Constants = require('expo-constants').default;
+} catch (e) {
+  console.warn('[TofuLog] expo-constants not available');
+}
 
 interface InfoRowProps {
   label: string;
@@ -26,13 +33,18 @@ function formatBytes(bytes: number | undefined): string {
 export function DeviceTab() {
   const deviceInfo = useDeviceInfo();
 
-  const appInfo = {
+  const appInfo = Constants ? {
     name: Constants.expoConfig?.name,
     version: Constants.expoConfig?.version,
     sdkVersion: Constants.expoConfig?.sdkVersion,
     bundleId:
       Constants.expoConfig?.ios?.bundleIdentifier ||
       Constants.expoConfig?.android?.package,
+  } : {
+    name: undefined,
+    version: undefined,
+    sdkVersion: undefined,
+    bundleId: undefined,
   };
 
   return (
