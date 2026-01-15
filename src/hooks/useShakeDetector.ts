@@ -1,5 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { Accelerometer } from 'expo-sensors';
+
+let Accelerometer: any;
+try {
+  Accelerometer = require('expo-sensors').Accelerometer;
+} catch (e) {
+  console.warn('[TofuLog] expo-sensors not available, shake detection disabled');
+  Accelerometer = null;
+}
 
 const SHAKE_THRESHOLD = 1.5;
 const SHAKE_TIMEOUT = 1000;
@@ -24,6 +31,10 @@ export function useShakeDetector({
       null;
 
     const startListening = async () => {
+      if (!Accelerometer) {
+        console.warn('[TofuLog] Accelerometer not available');
+        return;
+      }
       try {
         const isAvailable = await Accelerometer.isAvailableAsync();
         if (!isAvailable) {
